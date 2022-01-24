@@ -35,11 +35,11 @@ namespace Auto_Clicker
             mouse_event(MOUSEEVENTF_LEFTUP, xpos, ypos, 0, 0);
         }
 
-        public int mouse_down_min = 10;
-        public int mouse_down_max = 40;
+        public int mouse_down_min => (int)mouseDownMin.Value;
+        public int mouse_down_max => (int)mouseDownMax.Value;
 
-        public int mouse_up_min = 10;
-        public int mouse_up_max = 40;
+        public int mouse_up_min => (int)mouseUpMin.Value;
+        public int mouse_up_max => (int)mouseUpMax.Value;
 
         public bool running;
 
@@ -50,7 +50,36 @@ namespace Auto_Clicker
         private void Form1_Load(object sender, EventArgs e)
         {
             _globalKeyboardHook = new GlobalKeyboardHook();
+
             _globalKeyboardHook.KeyboardPressed += OnKeyPressed;
+
+            LoadSettings();
+
+            FormClosing += (s, args) => SaveSettings();
+        }
+
+        void LoadSettings()
+        {
+            mouseDownMin.Value = (int)Properties.Settings.Default["MouseDownMin"];
+            mouseDownMax.Value = (int)Properties.Settings.Default["MouseDownMax"];
+
+            mouseUpMin.Value = (int)Properties.Settings.Default["MouseUpMin"];
+            mouseUpMax.Value = (int)Properties.Settings.Default["MouseUpMax"];
+
+            cursorMoveCheckBox.Checked = (bool)Properties.Settings.Default["ShiftCursor"];
+        }
+
+        void SaveSettings()
+        {
+            Properties.Settings.Default["MouseDownMin"] = (int)mouseDownMin.Value;
+            Properties.Settings.Default["MouseDownMax"] = (int)mouseDownMax.Value;
+
+            Properties.Settings.Default["MouseUpMin"] = (int)mouseUpMin.Value;
+            Properties.Settings.Default["MouseUpMax"] = (int)mouseUpMax.Value;
+
+            Properties.Settings.Default["ShiftCursor"] = cursorMoveCheckBox.Checked;
+
+            Properties.Settings.Default.Save();
         }
 
         public void Toggle(bool value)
@@ -58,8 +87,7 @@ namespace Auto_Clicker
             if (value != running)
             {
                 running = value;
-
-                button1.Text = running ? "DEACTIVATE" : "ACTIVATE";
+                activateButton.Text = running ? "DEACTIVATE" : "ACTIVATE";
 
                 if (running)
                     ClickLoop();
@@ -70,23 +98,46 @@ namespace Auto_Clicker
         {
             while (running)
             {
-                await Task.Delay(random.Next(mouse_down_min, mouse_down_max));
+                var down = random.Next(mouse_down_min, mouse_down_max);
 
-                mouse_event(MOUSEEVENTF_MOVE, random.Next(0, 10), random.Next(0, 15),0,0);
+                toolStripStatusLabel1.Text = $"MOUSE DOWN - {down}ms";
+
+                await Task.Delay(down);
+
+                if(cursorMoveCheckBox.Checked)
+                    mouse_event(MOUSEEVENTF_MOVE, random.Next(0, 10), random.Next(0, 15),0,0);
 
                 mouse_event(MOUSEEVENTF_LEFTDOWN, Cursor.Position.X, Cursor.Position.Y, 0, 0);
 
-                await Task.Delay(random.Next(mouse_up_min, mouse_up_max));
+                var up = random.Next(mouse_up_min, mouse_up_max);
 
-                mouse_event(MOUSEEVENTF_MOVE, random.Next(-10, 10), random.Next(-10, 10), 0, 0);
+                toolStripStatusLabel1.Text = $"MOUSE UP - {up}ms";
+
+                await Task.Delay(up);
+
+                if (cursorMoveCheckBox.Checked)
+                    mouse_event(MOUSEEVENTF_MOVE, random.Next(-10, 10), random.Next(-10, 10), 0, 0);
 
                 mouse_event(MOUSEEVENTF_LEFTUP, Cursor.Position.X, Cursor.Position.Y, 0, 0);
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
-            Toggle(!running);
+            if (!running)
+            {
+                activateButton.Text = "3...";
+                await Task.Delay(500);
+                activateButton.Text = "2...";
+                await Task.Delay(500);
+                activateButton.Text = "1...";
+                await Task.Delay(500);
+
+                Toggle(true);
+            } else
+            {
+                Toggle(false);
+            }
         }
 
         private void OnKeyPressed(object sender, GlobalKeyboardHookEventArgs e)
