@@ -1,7 +1,7 @@
 ﻿
 namespace Auto_Clicker
 {
-    partial class Form1
+    partial class Main
     {
         /// <summary>
         /// Required designer variable.
@@ -30,36 +30,51 @@ namespace Auto_Clicker
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(12, 40);
+            this.button1.Location = new System.Drawing.Point(171, 12);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(263, 109);
+            this.button1.Size = new System.Drawing.Size(269, 62);
             this.button1.TabIndex = 0;
             this.button1.Text = "ACTIVATE";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // Form1
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(153, 26);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Marko\'s Awesome Auto Clicker\r\nToggle hotkey = Alt\r\n";
+            // 
+            // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(287, 161);
+            this.ClientSize = new System.Drawing.Size(452, 86);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Main";
+            this.Text = "Auto Clicker";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label1;
     }
 }
 
