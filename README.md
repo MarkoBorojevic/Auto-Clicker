@@ -1,2 +1,2 @@
 # Auto-Clicker
-A simple Auto Clicker desgined for Minecraft Bed Wars because I was too salty that 6 year olds on their parents MacBooks can click faster than me.
+A simple Auto Clicker I made because I was too salty that 6 year olds on their parents MacBooks can click faster than me in Minecraft Bed Wars.
